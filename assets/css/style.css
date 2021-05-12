@@ -445,7 +445,8 @@ section {
   font-weight: 700;
   margin-top: 20px;
   margin-bottom: 20px;
-  color: #050d18;
+  /* color: #050d18; */
+  color:red;
 }
 
 .resume .resume-item {
@@ -461,7 +462,7 @@ section {
   font-weight: 600;
   text-transform: uppercase;
   font-family: "Poppins", sans-serif;
-  color: #050d18;
+  color: blue;
   margin-bottom: 10px;
 }
 
@@ -698,14 +699,14 @@ section {
 }
 
 .services .title {
-  margin-left: 80px;
+  margin-left: 40px;
   font-weight: 700;
   margin-bottom: 15px;
-  font-size: 18px;
+  font-size: 20px;
 }
 
 .services .title a {
-  color: #343a40;
+  color: blue;
 }
 
 .services .title a:hover {
@@ -713,9 +714,9 @@ section {
 }
 
 .services .description {
-  margin-left: 80px;
+  margin-left: 40px;
   line-height: 24px;
-  font-size: 14px;
+  font-size: 18px;
 }
 
 /*--------------------------------------------------------------
