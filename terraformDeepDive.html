@@ -1,0 +1,142 @@
+<h1 id="terraform-deep-dive-course">Terraform Deep Dive Course</h1>
+<h2 id="course-content">Course Content</h2>
+<hr>
+<ul>
+<li>Import Existing Resources</li>
+<li>Managing state data</li>
+<li>Workspaces and collaboration</li>
+<li>Data sources and templates</li>
+<li>Adding a CI/CD pipeline</li>
+<li>Integrate with config managers</li>
+</ul>
+<h2 id="importing-existing-resources">Importing Existing Resources</h2>
+<hr>
+<blockquote>
+<p>Command line</p>
+<blockquote>
+<p>terraform plan -out filename.tfplan
+Create plan and store in the filename.tfplan
+terraform apply &quot;filename.tfplan&quot; to apply the plan</p>
+</blockquote>
+</blockquote>
+<h2 id="import-command">Import command</h2>
+<ul>
+<li>No automatic import</li>
+<li>Update configuration to include resources</li>
+<li>Identifiers from provider and configuration</li>
+<li>Adds new resources to the state.</li>
+</ul>
+<pre><code class="language-ruby"># Command syntax
+terraform import [options] ADDR ID
+# ADDR - Configuration resource identifier
+# Ex. module.vpc.aws_subnet.public[2]
+
+# ID - provider specific resource identifier
+# Ex. - subnet-ad536afg9
+
+# Importing a subnet into a configuration
+terraform import -var-file=&quot;terraform.tfvars&quot; \ module.vpc.aws_subnet.public[2] subnet-ad536afg9
+</code></pre>
+<h2 id="shell-tab-completion">Shell Tab-Completion</h2>
+<pre><code class="language-ruby"># Shell Tab-Completion
+terraform -install-autocomplete
+# Uninstalled
+terraform -unistall-autocomplete
+</code></pre>
+<h2 id="initilizing-working-directories">Initilizing Working Directories</h2>
+<hr>
+<blockquote>
+<p>Directory must be initialized before TF can perform any operations.</p>
+</blockquote>
+<ul>
+<li>A TF configuration describing resources TF should manage and changing over time.</li>
+<li>A hidden .terraform directory<ul>
+<li>Manage cached provider plugins</li>
+<li>Record which workspace is currently active</li>
+<li>Record last known backend configuration in case it needs to migrage state on the next run.</li>
+<li>Automanaged by TF, and is created during initialization.</li>
+</ul>
+</li>
+<li>State data</li>
+<li>terraform init<ul>
+<li>Initialize a working directory.</li>
+<li>Accessing state in the configured backend</li>
+<li>Downloading and installing provider plugins, modules.</li>
+</ul>
+</li>
+</ul>
+<h2 id="provisioning-infrastructure-with-terraform">Provisioning Infrastructure with Terraform</h2>
+<hr>
+<ul>
+<li>Create, modify and destroy infrastructure resources.</li>
+<li>Work only on currently selected workspace.</li>
+<li>terraform plan<ul>
+<li>Configuration to determine the desired state of all the resources it declares.</li>
+<li>Compare that designed state to the real infrastructure objects being managed with the current working directory and workspace.</li>
+<li>Present a description of the changes necessary to achieve the desired state.</li>
+<li>use to run validate configuration changes and confirm that the resulting actions are as expected.</li>
+</ul>
+</li>
+<li>terraform apply<ul>
+<li>Perform the fresh plan right before applying changes</li>
+<li>Display the plan to the user when asking for confirmation.</li>
+</ul>
+</li>
+<li>terraform destroy<ul>
+<li>Destroy all of the resources being managed b the current working directory nad workspace.</li>
+</ul>
+</li>
+<li>Writing and modifying terrafrom code<ul>
+<li>terraform fmt<ul>
+<li>Rewrite TF configuration files to a canonical format and style</li>
+</ul>
+</li>
+<li>terraform validate<ul>
+<li>Validates the syntax and argument of the TF configuration files in a directory.</li>
+</ul>
+</li>
+<li>TF upgrade <a href="https://www.terraform.io/upgrade-guides/index.html">https://www.terraform.io/upgrade-guides/index.html</a><ul>
+<li>Automatically modify the configuration files in TF module to help deal with major syntax changes that occurred.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="inspecting-infrastructure">Inspecting Infrastructure</h2>
+<hr>
+<ul>
+<li>terraform graph command create a visual representation of a configuration or a set of planned changes.</li>
+</ul>
+<pre><code class="language-ruby">terraform graph | dot -Tsvg &gt; graph.svg
+</code></pre>
+<ul>
+<li>terraform output command can get values to the top-level output value of a configuration.<ul>
+<li>Helpful when making use of the infrastructure TF has provisioned.</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-ruby">output &quot;instance_ips&quot; {
+  value = aws_instance.web.*.public_ip
+}
+
+output &quot;lb_address&quot; {
+  value = aws_alb.web.public_dns
+}
+</code></pre>
+<ul>
+<li>terraform show generated human readble versions of a state file.</li>
+<li>terraform state list command<ul>
+<li>List the resources being managed by the current working directory and worksapce.</li>
+</ul>
+</li>
+<li>terraform state show command<ul>
+<li>Print all of the attributes of a given resource being managed by the current working directory and worksapce, including generated read-only attributes like the unique ID assigned by the cloud provider.</li>
+</ul>
+</li>
+<li>terraform import command <a href="https://www.terraform.io/docs/cli/commands/import.html">https://www.terraform.io/docs/cli/commands/import.html</a></li>
+</ul>
+<h2 id="manipulating-terraform-state">Manipulating Terraform State</h2>
+<hr>
+<ul>
+<li><a href="https://www.terraform.io/docs/cli/state/index.html">https://www.terraform.io/docs/cli/state/index.html</a></li>
+</ul>
